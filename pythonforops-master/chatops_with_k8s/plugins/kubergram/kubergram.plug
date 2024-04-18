@@ -1,0 +1,10 @@
+[Core]
+Name = Kubergram
+Module = kubergram
+
+[Documentation]
+Description = Plugin for integrate k8s with telegram
+
+[Python]
+Version = 3
+

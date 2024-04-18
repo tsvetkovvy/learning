@@ -7,9 +7,9 @@ if __name__ == '__main__':
     # TODO: размер панорамного окна 170х320 мм
     # TODO: холодильник наклонять нельзя
 
-    vendor = input()  # заведомо знаем, что нужно вводить определенных вендоров
-    fridge_height = int(input())  # заведомо знаем, что нужно вводить число (без доп. проверок)
-    fridge_width = int(input())  # заведомо знаем, что нужно вводить число (без доп. проверок)
+    # vendor = input()  # заведомо знаем, что нужно вводить определенных вендоров
+    # fridge_height = int(input())  # заведомо знаем, что нужно вводить число (без доп. проверок)
+    # fridge_width = int(input())  # заведомо знаем, что нужно вводить число (без доп. проверок)
 
     # Option 1
     # if vendor in ('Brrr', 'SMF'):  # если указан верный вендор
@@ -38,4 +38,16 @@ if __name__ == '__main__':
 
 
     # Practice
+    name_of_branch = input()
+    if name_of_branch in ('Development', 'Staging'):
 
+        test_result = int(input())
+        coverage = float(input())
+        approve_count = int(input())
+
+        if test_result == 1 and (coverage > 5 or approve_count > 3):
+            print('Код отправлен в релиз')
+        else:
+            print(f'Код из {name_of_branch} с результатами тестов: {test_result}, coverage: {coverage}, approve: {approve_count} в релиз не попадает')
+    else:
+        print(f'В ветке {name_of_branch} непроверенный код, пропускаем')
