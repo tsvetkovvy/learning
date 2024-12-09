@@ -1,0 +1,58 @@
+name: mini-go-app
+services:
+  web:
+    image: nginx:alpine
+    ports:
+      - "8082:80"
+    networks:
+      - frontend-net
+    volumes:
+      - type: bind
+        source: ./nginx/app.conf
+        target: /etc/nginx/conf.d/default.conf
+        read_only: true
+    depends_on:
+      - app
+
+  app:
+    image: test-go-app:${APP_VERSION:-latest}
+    build: ./simple-golang-api/
+    environment:
+      API_DB_HOST: db
+      API_DB_PASS: apipass
+      API_DB_NAME: api
+      API_DB_USER: apiuser
+      API_DB_PORT: 5432
+    networks:
+      - frontend-net
+      - backend-net
+    depends_on:
+      db:
+        condition: service_healthy
+        restart: true
+
+  db:
+    image: postgres:16.2-alpine
+    environment:
+      POSTGRES_PASSWORD: apipass
+      POSTGRES_DB: api
+      POSTGRES_USER: apiuser
+    volumes:
+      - dbdata:/var/lib/postgresql/data
+    networks:
+      - backend-net
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready" ]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 30s
+      start_interval: 1s
+
+networks:
+  frontend-net:
+  backend-net:
+
+
+volumes:
+  dbdata:
